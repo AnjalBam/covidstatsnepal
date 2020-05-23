@@ -51,6 +51,7 @@ export const NepalDataWrapper = styled.div`
   }
   h6 {
     font-weight: 300;
+    font-size: 0.75rem;
   }
   .newCases {
     font-size: 1.5rem;
@@ -158,6 +159,10 @@ export const HorizontalDivider = styled.hr`
 export const WorldDataWrapper = styled(MainWrapper)`
   margin-top: 1.5rem;
   border-radius: 10px;
+  & h6 {
+    font-weight: 400;
+    font-size: 0.75rem;
+  }
 `;
 
 export const ChartWrapper = styled.div`

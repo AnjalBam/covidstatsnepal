@@ -56,6 +56,41 @@ export class About extends Component {
             </a>
           </styles.About_SocialWrapper>
         </styles.Wrapper>
+        <styles.Wrapper>
+          <styles.About_title>Resources Used in Project</styles.About_title>
+          <div>
+            <styles.About_description>
+              This app was completely made with react and different APIs used in
+              the project are listed as follows:
+              <ul>
+                <li>
+                  <a
+                    href="corona.lmao.ninja"
+                    style={{ textDecoration: "underline" }}>
+                    Novel CoronaVirus API
+                  </a>
+                </li>
+              </ul>
+              <br />
+              Technologies Used In the Project:
+              <ul>
+                <li>
+                  <strong>ReactJS</strong> is the base of project.
+                </li>
+                <li>
+                  <strong>Styled-Components</strong> for styling the components.
+                </li>
+                <li>
+                  <strong>React Router</strong> For client-side routing.
+                </li>
+                <li>
+                  <strong>Recharts</strong> For graphical representation of
+                  data.
+                </li>
+              </ul>
+            </styles.About_description>
+          </div>
+        </styles.Wrapper>
       </styles.About_Wrapper>
     );
   }
