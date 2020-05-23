@@ -13,7 +13,7 @@ export class Routes extends Component {
       <>
         <Switch>
           <Route exact path="/" component={MainDisplay} />
-          <Route exact path="/covidstatsnepal">
+          <Route exact path="/covidstats">
             <Redirect to="/" />
           </Route>
           <Route ecact path="/view-by-country" component={FetchByCountry} />
