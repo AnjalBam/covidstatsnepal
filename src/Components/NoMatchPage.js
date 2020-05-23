@@ -14,7 +14,7 @@ export class NoMatchPage extends Component {
             The page you requested couldn't be found.
           </styles.About_description>
           <styles.About_description>
-            <Link to="/home">Return Home</Link>
+            <Link to="/">Return Home</Link>
           </styles.About_description>
         </styles.Wrapper>
       </div>
