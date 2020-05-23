@@ -5,7 +5,7 @@ import About from "./About";
 import ImportantInfo from "./ImportantInfo";
 import NoMatchPage from "./NoMatchPage";
 
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 export class Routes extends Component {
   render() {
@@ -13,6 +13,9 @@ export class Routes extends Component {
       <>
         <Switch>
           <Route exact path="/" component={MainDisplay} />
+          <Route exact path="/covidstatsnepal">
+            <Redirect to="/" />
+          </Route>
           <Route ecact path="/view-by-country" component={FetchByCountry} />
           <Route exact path="/about" component={About} />
           <Route exact path="/imp-info" component={ImportantInfo} />
