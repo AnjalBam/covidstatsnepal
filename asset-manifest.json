@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/covidstatsnepal/static/css/main.0925239f.chunk.css",
+    "main.js": "/covidstatsnepal/static/js/main.b160e059.chunk.js",
+    "main.js.map": "/covidstatsnepal/static/js/main.b160e059.chunk.js.map",
+    "runtime-main.js": "/covidstatsnepal/static/js/runtime-main.ca674718.js",
+    "runtime-main.js.map": "/covidstatsnepal/static/js/runtime-main.ca674718.js.map",
+    "static/js/2.1a331b55.chunk.js": "/covidstatsnepal/static/js/2.1a331b55.chunk.js",
+    "static/js/2.1a331b55.chunk.js.map": "/covidstatsnepal/static/js/2.1a331b55.chunk.js.map",
+    "index.html": "/covidstatsnepal/index.html",
+    "precache-manifest.5e341a532371a7d96e8f3a88796fefc5.js": "/covidstatsnepal/precache-manifest.5e341a532371a7d96e8f3a88796fefc5.js",
+    "service-worker.js": "/covidstatsnepal/service-worker.js",
+    "static/css/main.0925239f.chunk.css.map": "/covidstatsnepal/static/css/main.0925239f.chunk.css.map",
+    "static/js/2.1a331b55.chunk.js.LICENSE.txt": "/covidstatsnepal/static/js/2.1a331b55.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ca674718.js",
+    "static/js/2.1a331b55.chunk.js",
+    "static/css/main.0925239f.chunk.css",
+    "static/js/main.b160e059.chunk.js"
+  ]
+}
