@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import * as styles from "./utils/CoutntryDataStyles";
 
@@ -16,6 +17,7 @@ export class CountryData extends Component {
       hasHistoricalData: false,
       isChartShown: false,
       showCharts: false,
+      isDataLoaded: false,
     };
   }
 
@@ -32,41 +34,49 @@ export class CountryData extends Component {
           hasHistoricalData: false,
           isChartShown: false,
           showCharts: false,
+          isDataLoaded: true,
+          hasErrors: false,
         });
       }
     }
   };
   setChartData() {
-    if (this.state.countryData.country) {
+    if (this.state.isDataLoaded) {
       let query = this.state.countryData.country;
       let apiLinkForChart = `https://disease.sh/v2/historical/${query}?lastdays=30`;
       fetch(apiLinkForChart)
-        .then((res) => res.json())
+        .then((res) => {
+          if (res.status === 200) {
+            return res.json();
+          } else if (res.status === 404) this.setState({ hasErrors: true });
+        })
         .then((chartData) => {
-          let cases = Object.values(chartData.timeline.cases);
-          let recovered = Object.values(chartData.timeline.recovered);
-          let deaths = Object.values(chartData.timeline.deaths);
-          let dates = Object.keys(chartData.timeline.cases);
+          if (!this.state.hasErrors) {
+            let cases = Object.values(chartData.timeline.cases);
+            let recovered = Object.values(chartData.timeline.recovered);
+            let deaths = Object.values(chartData.timeline.deaths);
+            let dates = Object.keys(chartData.timeline.cases);
 
-          let datas = [];
+            let datas = [];
 
-          for (let i = 0; i < dates.length; i++) {
-            let newData = {
-              date: "",
-              cases: "",
-              deaths: "",
-              recovered: "",
-            };
-            newData["date"] = dates[i];
-            newData["cases"] = cases[i];
-            newData["recovered"] = recovered[i];
-            newData["deaths"] = deaths[i];
-            datas.push(newData);
+            for (let i = 0; i < dates.length; i++) {
+              let newData = {
+                date: "",
+                cases: "",
+                deaths: "",
+                recovered: "",
+              };
+              newData["date"] = dates[i];
+              newData["cases"] = cases[i];
+              newData["recovered"] = recovered[i];
+              newData["deaths"] = deaths[i];
+              datas.push(newData);
+            }
+            this.setState({
+              countryHistoricalData: datas,
+              hasHistoricalData: true,
+            });
           }
-          this.setState({
-            countryHistoricalData: datas,
-            hasHistoricalData: true,
-          });
         });
     } else return;
   }
@@ -147,10 +157,17 @@ export class CountryData extends Component {
             : "View Graphical Data"}
         </styles.ButtonGraphical>
         {this.state.showCharts ? (
-          this.state.hasHistoricalData ? (
-            <Chart data={this.state.countryHistoricalData} />
+          this.state.hasErrors ? (
+            this.state.countryHistoricalData ? (
+              <Chart data={this.state.countryHistoricalData} />
+            ) : (
+              <Loader type="ThreeDots" color="#00bfff" height={50} width={50} />
+            )
           ) : (
-            <Loader type="ThreeDots" color="#00bfff" height={50} width={50} />
+            <div>
+              <h1>Error Fetching Data.</h1>
+              <Link to="/fetch-by-country">Return</Link>
+            </div>
           )
         ) : null}
       </div>
@@ -168,10 +185,10 @@ export class CountryData extends Component {
   };
 
   render() {
-    console.log(this.state.countryData);
+    //console.log(this.state.countryData);
     return (
       <styles.Wrapper>
-        {!this.state.countryData.country ? (
+        {!this.state.isDataLoaded ? (
           <h1>Please Search for some Data</h1>
         ) : (
           this.getDetails()

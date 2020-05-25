@@ -25,11 +25,15 @@ export class FetchByCountry extends Component {
   componentDidMount() {
     const allCountryDataApi = "https://disease.sh/v2/countries";
     fetch(allCountryDataApi)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        }
+      })
       .then((countriesData) => {
         let countryList = this.getCountryNames(countriesData);
 
-        //console.log(countriesData);
+        console.log(countriesData);
         // const updatedDate = new Date(countriesData.updated).toUTCString();
         return this.setState({
           countries: countryList,
@@ -57,7 +61,6 @@ export class FetchByCountry extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     let spCountryData = this.getCountryData(); //recieve specific country data based on search
-    //console.log(spCountryData);
     this.setState({
       countryData: spCountryData,
       countryInfo: spCountryData.countryInfo,
@@ -66,7 +69,6 @@ export class FetchByCountry extends Component {
 
   getCountryData = () => {
     let countryData = {};
-
     //filtering data based on state of search
     this.state.allData.filter((data) => {
       if (this.state.countryValue === data.country) {
@@ -105,7 +107,6 @@ export class FetchByCountry extends Component {
             </form>
           </styles.FormWrapper>
         </styles.Wrapper>
-        {/* {console.log(this.state.countryInfo)} */}
         {/* form ends here */}
         <div>
           {!this.state.isDataLoaded ? (

@@ -14,20 +14,34 @@ export class WorldData extends Component {
       isChartShown: false,
       showCharts: false,
       data: [],
+      isDataLoaded: false,
+      isChartDataLoaded: false,
     };
   }
 
   componentDidMount() {
     const worldDataApi = "https://disease.sh/v2/all";
     fetch(worldDataApi)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        }
+      })
       .then((worldData) => {
         const updatedDate = new Date(worldData.updated).toUTCString();
-        this.setState({ worldData: worldData, updatedTime: updatedDate });
+        this.setState({
+          worldData: worldData,
+          updatedTime: updatedDate,
+          isDataLoaded: true,
+        });
       });
     const apiLink = "https://disease.sh/v2/historical/all?lastdays=30";
     fetch(apiLink)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        }
+      })
       .then((data) => {
         let cases = Object.values(data.cases);
         let recovered = Object.values(data.recovered);
@@ -50,7 +64,7 @@ export class WorldData extends Component {
           datas.push(newData);
         }
         // console.log("chartData", datas);
-        this.setState({ data: datas });
+        this.setState({ data: datas, isChartDataLoaded: true });
       });
   }
 
@@ -58,163 +72,73 @@ export class WorldData extends Component {
     // console.log(this.state.worldData);
     return (
       <div>
-        <styles.WorldDataWrapper>
-          <styles.MainHeading>World Statistics</styles.MainHeading>
-          <h6 style={{ color: "#f7f7f7" }}>
-            Last Updated:{" "}
-            {this.state.updatedTime ? (
-              <span>{this.state.updatedTime}</span>
-            ) : (
-              <span>
-                <Loader
-                  type="ThreeDots"
-                  color="#00BFFF"
-                  height={20}
-                  width={20}
-                />
-              </span>
-            )}
-          </h6>
-          <styles.DataWrapper>
-            <div>
-              Total Cases: <br />
-              {this.state.worldData.cases ? (
-                <span>{this.state.worldData.cases.toLocaleString()}</span>
-              ) : (
-                <span>
-                  <Loader
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={40}
-                    width={40}
-                  />
-                </span>
-              )}
-            </div>
-            <div>
-              Total Deaths: <br />
-              {this.state.worldData.cases ? (
-                <span>{this.state.worldData.deaths.toLocaleString()}</span>
-              ) : (
-                <span>
-                  <Loader
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={40}
-                    width={40}
-                  />
-                </span>
-              )}
-            </div>
-            <div>
-              Total recovered: <br />
-              {this.state.worldData.recovered ? (
-                <span>{this.state.worldData.recovered.toLocaleString()}</span>
-              ) : (
-                <span>
-                  <Loader
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={40}
-                    width={40}
-                  />
-                </span>
-              )}
-            </div>
-            <div>
-              Total Active Cases: <br />
-              {this.state.worldData.active ? (
-                <span>{this.state.worldData.active.toLocaleString()}</span>
-              ) : (
-                <span>
-                  <Loader
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={40}
-                    width={40}
-                  />
-                </span>
-              )}
-            </div>
-          </styles.DataWrapper>
-          <styles.DataWrapper>
-            <div>
-              Total Tests: <br />
-              {this.state.worldData.cases ? (
-                <span>{this.state.worldData.tests.toLocaleString()}</span>
-              ) : (
-                <span>
-                  <Loader
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={40}
-                    width={40}
-                  />
-                </span>
-              )}
-            </div>
-            <div>
-              Total Deaths Today: <br />
-              {this.state.worldData.cases ? (
-                <span>{this.state.worldData.todayDeaths.toLocaleString()}</span>
-              ) : (
-                <span>
-                  <Loader
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={40}
-                    width={40}
-                  />
-                </span>
-              )}
-            </div>
-            <div>
-              Critical Cases: <br />
-              {this.state.worldData.recovered ? (
-                <span>{this.state.worldData.critical.toLocaleString()}</span>
-              ) : (
-                <span>
-                  <Loader
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={40}
-                    width={40}
-                  />
-                </span>
-              )}
-            </div>
-            <div>
-              New Cases Today: <br />
-              {this.state.worldData.active ? (
-                <span>{this.state.worldData.todayCases.toLocaleString()}</span>
-              ) : (
-                <span>
-                  <Loader
-                    type="ThreeDots"
-                    color="#00BFFF"
-                    height={40}
-                    width={40}
-                  />
-                </span>
-              )}
-            </div>
-          </styles.DataWrapper>
-          <styles.Button
-            title="Last 30 days"
-            onClick={() =>
-              this.setState((prevState) => {
-                return {
-                  showCharts: !prevState.showCharts,
-                  isChartShown: !prevState.isChartShown,
-                };
-              })
-            }>
-            {this.state.isChartShown
-              ? "Hide Graphical Data"
-              : "View Data Graphically"}
-          </styles.Button>
-          {this.state.showCharts ? <Chart data={this.state.data} /> : null}
-        </styles.WorldDataWrapper>
+        {this.state.isDataLoaded && this.state.isChartDataLoaded ? (
+          <>
+            <styles.WorldDataWrapper>
+              <styles.MainHeading>World Statistics</styles.MainHeading>
+              <h6 style={{ color: "#f7f7f7" }}>
+                Last Updated: <span>{this.state.updatedTime}</span>
+              </h6>
+              <styles.DataWrapper>
+                <div>
+                  Total Cases: <br />
+                  <span>{this.state.worldData.cases.toLocaleString()}</span>
+                </div>
+                <div>
+                  Total Deaths: <br />
+                  <span>{this.state.worldData.deaths.toLocaleString()}</span>
+                </div>
+                <div>
+                  Total recovered: <br />
+                  <span>{this.state.worldData.recovered.toLocaleString()}</span>
+                </div>
+                <div>
+                  Total Active Cases: <br />
+                  <span>{this.state.worldData.active.toLocaleString()}</span>
+                </div>
+              </styles.DataWrapper>
+              <styles.DataWrapper>
+                <div>
+                  Total Tests: <br />
+                  <span>{this.state.worldData.tests.toLocaleString()}</span>
+                </div>
+                <div>
+                  Total Deaths Today: <br />
+                  <span>
+                    {this.state.worldData.todayDeaths.toLocaleString()}
+                  </span>
+                </div>
+                <div>
+                  Critical Cases: <br />
+                  <span>{this.state.worldData.critical.toLocaleString()}</span>
+                </div>
+                <div>
+                  New Cases Today: <br />
+                  <span>
+                    {this.state.worldData.todayCases.toLocaleString()}
+                  </span>
+                </div>
+              </styles.DataWrapper>
+              <styles.Button
+                title="Last 30 days"
+                onClick={() =>
+                  this.setState((prevState) => {
+                    return {
+                      showCharts: !prevState.showCharts,
+                      isChartShown: !prevState.isChartShown,
+                    };
+                  })
+                }>
+                {this.state.isChartShown
+                  ? "Hide Graphical Data"
+                  : "View Data Graphically"}
+              </styles.Button>
+              {this.state.showCharts ? <Chart data={this.state.data} /> : null}
+            </styles.WorldDataWrapper>
+          </>
+        ) : (
+          <Loader type="Circles" color="#00BFFF" height={80} width={80} />
+        )}
       </div>
     );
   }

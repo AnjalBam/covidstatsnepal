@@ -91,6 +91,15 @@ export class About extends Component {
             </styles.About_description>
           </div>
         </styles.Wrapper>
+        <styles.Wrapper>
+          <div>
+            <styles.ButtonGraphical>
+              <a href="https://github.com/AnjalBam/covidstatsnepal">
+                Github Repo
+              </a>
+            </styles.ButtonGraphical>
+          </div>
+        </styles.Wrapper>
       </styles.About_Wrapper>
     );
   }

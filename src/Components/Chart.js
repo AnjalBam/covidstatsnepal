@@ -50,11 +50,6 @@ export class Chart extends Component {
       //dataForChart: [],
     };
   }
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (this.props !== prevProps) {
-  //     this.setState({ dataForChart: this.props.data });
-  //   }
-  // }
 
   render() {
     return (
