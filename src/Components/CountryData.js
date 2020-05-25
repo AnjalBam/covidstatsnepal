@@ -157,7 +157,7 @@ export class CountryData extends Component {
             : "View Graphical Data"}
         </styles.ButtonGraphical>
         {this.state.showCharts ? (
-          this.state.hasErrors ? (
+          !this.state.hasErrors ? (
             this.state.countryHistoricalData ? (
               <Chart data={this.state.countryHistoricalData} />
             ) : (
@@ -166,7 +166,7 @@ export class CountryData extends Component {
           ) : (
             <div>
               <h1>Error Fetching Data.</h1>
-              <Link to="/fetch-by-country">Return</Link>
+              <Link to="/view-by-country">Return</Link>
             </div>
           )
         ) : null}
